@@ -106,37 +106,6 @@ namespace Rusty.EditorUI
         }
 
         /* Private methods. */
-        private void SetElements(Array<ListEntryElement> elements)
-        {
-            // Clear the list.
-            Clear();
-
-            // Add elements.
-            if (elements != null)
-            {
-                foreach (ListEntryElement element in elements)
-                {
-                    Add(element);
-                }
-            }
-        }
-
-        private Array<ListEntryElement> GetElements()
-        {
-            Array<ListEntryElement> elements = new();
-            for (int i = 0; i < Children.Count - 1; i++)
-            {
-                elements.Add(Children[i] as ListEntryElement);
-            }
-            return elements;
-        }
-
-        private void Clear()
-        {
-            Children.Clear();
-            Children.Add(AddButton);
-        }
-
         private void Add(ListEntryElement element)
         {
             Children.Add(element);
@@ -147,7 +116,7 @@ namespace Rusty.EditorUI
 
         private void InsertAt(int elementIndex, ListEntryElement element)
         {
-            Children.Insert(elementIndex, element);
+            Children.InsertAt(elementIndex, element);
             ConnectEvents(element);
             MoveAddButtonToBottom();
             UpdateIndices();

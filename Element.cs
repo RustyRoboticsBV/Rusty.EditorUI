@@ -68,7 +68,8 @@ namespace Rusty.EditorUI
             // Make sure the types match.
             if (other.GetType() != GetType())
             {
-                GD.Print("Cannot copy from other field because it's not of the same type!");
+                GD.Print($"Element '{Name}' of type '{GetType().Name}' cannot copy element '{other.Name}' because it is of " +
+                    $"type '{other.GetType().Name}'!");
                 return false;
             }
 
