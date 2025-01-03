@@ -1,6 +1,5 @@
 ﻿using Godot;
 using System;
-using System.Reflection.PortableExecutable;
 
 namespace Rusty.EditorUI
 {
@@ -15,24 +14,55 @@ namespace Rusty.EditorUI
         /// </summary>
         public string ButtonText
         {
-            get => RealButton.Text;
-            set => RealButton.Text = value;
+            get => MenuButton.Text;
+            set => MenuButton.Text = value;
+        }
+        /// <summary>
+        /// The options in the popup menu.
+        /// </summary>
+        public string[] PopupOptions
+        {
+            get
+            {
+                if (MenuButton == null)
+                    return new string[0];
+                PopupMenu popup = MenuButton.GetPopup();
+                int itemCount = popup.ItemCount;
+                string[] options = new string[itemCount];
+                for (int i = 0; i < itemCount; i++)
+                {
+                    options[i] = popup.GetItemText(i);
+                }
+                return options;
+            }
+            set
+            {
+                if (MenuButton == null)
+                    return;
+                PopupMenu popup = MenuButton.GetPopup();
+                popup.Clear();
+                foreach (string option in value)
+                {
+                    popup.AddItem(option);
+                }
+            }
         }
 
         /* Private properties. */
         private Button FakeButton { get; set; }
-        private Button RealButton { get; set; }
+        private MenuButton MenuButton { get; set; }
 
         /* Public events. */
-        public event Action<int> Selected;
+        public event Action<long> PressedOption;
 
         /* Constructors. */
         public PopupButtonElement() : base() { }
 
-        public PopupButtonElement(float height, string buttonText) : this()
+        public PopupButtonElement(float height, string buttonText, string[] popupOptions) : this()
         {
             Height = height;
             ButtonText = buttonText;
+            PopupOptions = popupOptions;
         }
 
         public PopupButtonElement(Element other) : this()
@@ -51,10 +81,11 @@ namespace Rusty.EditorUI
             if (base.CopyStateFrom(other) && other is PopupButtonElement otherButton)
             {
                 ButtonText = otherButton.ButtonText;
-
+                PopupOptions = otherButton.PopupOptions;
                 return true;
             }
-            return false;
+            else
+                return false;
         }
 
         /* Protected methods. */
@@ -63,27 +94,32 @@ namespace Rusty.EditorUI
             // Element init.
             base.Init();
 
-            // Add fake button as a background.
-            Button fakeButton = new();
-            fakeButton.Name = "Background";
-            AddChild(fakeButton);
+            // Set name.
+            Name = "PopupButton";
+
+            // Add fake button for a background.
+            ElementMargin buttonContainer = new();
+            buttonContainer.Name = "ActionButtonContainer";
+            AddChild(buttonContainer);
+
+            FakeButton = new();
+            FakeButton.Name = "Background";
+            buttonContainer.AddChild(FakeButton);
 
             // Add real button.
-            MenuButton menuButton = new();
-            menuButton.Name = "ActionButton";
-            menuButton.Text = "...";
-            menuButton.GetPopup().AddItem("Insert");
-            menuButton.GetPopup().AddItem("Duplicate");
-            menuButton.GetPopup().AddItem("Move Up");
-            menuButton.GetPopup().AddItem("Move Down");
-            menuButton.GetPopup().AddItem("Delete");
-            AddChild(menuButton);
+            MenuButton = new();
+            MenuButton.Name = "MenuButton";
+            MenuButton.Text = "MenuButton";
+            buttonContainer.AddChild(MenuButton);
 
-            // Add button.
-            RealButton = new();
-            RealButton.Name = "Button";
-            RealButton.Text = "Text";
-            AddChild(RealButton);
+            // Set up events.
+            MenuButton.GetPopup().IdPressed += OnPopupPressed;
+        }
+
+        /* Private methods. */
+        private void OnPopupPressed(long id)
+        {
+            PressedOption?.Invoke(id);
         }
     }
 }

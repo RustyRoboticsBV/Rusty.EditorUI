@@ -94,6 +94,9 @@ namespace Rusty.EditorUI
             // Element init.
             base.Init();
 
+            // Set name.
+            Name = "List";
+
             // Add button.
             AddButton = new(20f, "Add Entry");
             AddButton.Name = "AddButton";
@@ -199,39 +202,33 @@ namespace Rusty.EditorUI
         // Event handlers.
         private void OnPressedAdd()
         {
-            GD.Print("Added");
             ListEntryElement element = CreateElement();
             Add(element);
         }
 
         private void OnPressedInsert(int index)
         {
-            GD.Print("Inserted");
             ListEntryElement element = CreateElement();
             InsertAt(index, element);
         }
 
         private void OnPressedDuplicate(int index)
         {
-            GD.Print("Duplicated");
             DuplicateAt(index);
         }
 
         private void OnPressedMoveUp(int index)
         {
-            GD.Print("Moved Up");
             MoveUpAt(index);
         }
 
         private void OnPressedMoveDown(int index)
         {
-            GD.Print("Moved Down");
             MoveDownAt(index);
         }
 
         private void OnPressedDelete(int index)
         {
-            GD.Print("Deleted");
             RemoveAt(index);
         }
     }

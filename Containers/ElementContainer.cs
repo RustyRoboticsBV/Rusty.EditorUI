@@ -10,6 +10,9 @@ namespace Rusty.EditorUI
     public abstract partial class ElementContainer<T> : Element where T : Container, new()
     {
         /* Public properties. */
+        /// <summary>
+        /// The number of elements in the container.
+        /// </summary>
         public int Count => Elements.Count;
 
         /* Protected properties. */

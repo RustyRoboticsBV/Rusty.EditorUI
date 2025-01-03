@@ -20,6 +20,9 @@ namespace Rusty.EditorUI
         public event EventHandler PressedMoveDown;
         public event EventHandler PressedDelete;
 
+        /* Private properties. */
+        PopupButtonElement ActionButton { get; set; }
+
         /* Constructors. */
         public ListEntryElement() : base() { }
 
@@ -64,29 +67,16 @@ namespace Rusty.EditorUI
             HeaderSizeFlags = SizeFlags.ExpandFill;
 
             // Add fake button for a background.
-            MarginContainer buttonContainer = new();
-            buttonContainer.Name = "ActionButtonContainer";
-            buttonContainer.SizeFlagsHorizontal = SizeFlags.ShrinkEnd;
-            buttonContainer.CustomMinimumSize = new Vector2(100f, Height);
-            Header.AddChild(buttonContainer);
+            ActionButton = new();
+            ActionButton.SizeFlagsHorizontal = SizeFlags.ShrinkEnd;
+            ActionButton.CustomMinimumSize = new Vector2(100f, Height);
+            Header.AddChild(ActionButton);
 
-            Button fakeButton = new();
-            fakeButton.Name = "Background";
-            buttonContainer.AddChild(fakeButton);
-
-            // Add real button.
-            MenuButton menuButton = new();
-            menuButton.Name = "ActionButton";
-            menuButton.Text = "...";
-            menuButton.GetPopup().AddItem("Insert");
-            menuButton.GetPopup().AddItem("Duplicate");
-            menuButton.GetPopup().AddItem("Move Up");
-            menuButton.GetPopup().AddItem("Move Down");
-            menuButton.GetPopup().AddItem("Delete");
-            buttonContainer.AddChild(menuButton);
+            ActionButton.ButtonText = "...";
+            ActionButton.PopupOptions = new string[] { "Insert", "Duplicate", "Move Up", "Move Down", "Delete" };
 
             // Set up events.
-            menuButton.GetPopup().IdPressed += OnPopupPressed;
+            ActionButton.PressedOption += OnPopupPressed;
 
             // Set name.
             Name = "ListEntryElement_" + Index;
