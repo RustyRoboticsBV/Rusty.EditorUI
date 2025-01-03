@@ -101,7 +101,7 @@ namespace Rusty.EditorUI
         /* Godot overrides. */
         public override void _Process(double delta)
         {
-            AddThemeConstantOverride("margin_left", GlobalIndentation);
+            AddThemeConstantOverride("margin_left", LocalIndentation);
         }
 
         /* Protected methods. */
