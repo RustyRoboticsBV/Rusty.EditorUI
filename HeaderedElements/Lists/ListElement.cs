@@ -47,6 +47,9 @@ namespace Rusty.EditorUI
 
         public ListElement(ListElement other) : base(other) { }
 
+        /* Indexers. */
+        public ListEntryElement this[int index] => Children[index] as ListEntryElement;
+
         /* Public methods. */
         public override ListElement Duplicate()
         {

@@ -55,13 +55,12 @@ namespace Rusty.EditorUI
 
         /* Public methods. */
         /// <summary>
-        /// Make a copy of this field. Also copies all nested fields.
+        /// Make a deep copy of this element.
         /// </summary>
         public abstract Element Duplicate();
 
         /// <summary>
-        /// Copy properties and nested fields from another field of the same type.
-        /// Returns true on success.
+        /// Copy internal state from another field of the same type. Returns true on success.
         /// </summary>
         public virtual bool CopyStateFrom(Element other)
         {

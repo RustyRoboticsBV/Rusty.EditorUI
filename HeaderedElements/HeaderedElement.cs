@@ -35,6 +35,10 @@ namespace Rusty.EditorUI
         }
 
         /// <summary>
+        /// The number of elements contained in this header.
+        /// </summary>
+        public int Count => Children.Count;
+        /// <summary>
         /// The indentation of the contents relative to this headered element.
         /// </summary>
         public int ContentsIndentation
@@ -59,11 +63,14 @@ namespace Rusty.EditorUI
             ContentsIndentation = contentsIndentation;
             foreach (Element content in contents)
             {
-                AddElement(content);
+                Add(content);
             }
         }
 
         public HeaderedElement(HeaderedElement<T> other) : base(other) { }
+
+        /* Indexers. */
+        public Element this[int index] => GetAt(index);
 
         /* Public methods. */
         public override bool CopyStateFrom(Element other)
@@ -78,11 +85,43 @@ namespace Rusty.EditorUI
         }
 
         /// <summary>
+        /// Return the index of an element contained on this header. Returns -1 if the element wasn't contained on this header.
+        /// </summary>
+        public int IndexOf(Element element)
+        {
+            return Children.IndexOf(element);
+        }
+        
+        /// <summary>
+        /// Get an element contained on this header.
+        /// </summary
+        public Element GetAt(int index)
+        {
+            return Children.GetAt(index);
+        }
+
+        /// <summary>
         /// Add an element to this header.
         /// </summary>
-        public void AddElement(Element element)
+        public void Add(Element element)
         {
             Children.Add(element);
+        }
+
+        /// <summary>
+        /// Insert an element into this header at some index.
+        /// </summary>
+        public void InsertAt(int index, Element element)
+        {
+            Children.InsertAt(index, element);
+        }
+
+        /// <summary>
+        /// Remove an element from this header.
+        /// </summary>
+        public void RemoveAt(int index)
+        {
+            Children.RemoveAt(index);
         }
 
         /* Protected methods. */

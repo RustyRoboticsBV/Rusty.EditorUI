@@ -32,7 +32,7 @@ namespace Rusty.EditorUI
             // Add duplicate of template as nested field.
             Element element = contentsTemplate.Duplicate();
             element.LocalIndentation = 0;
-            AddElement(element);
+            Add(element);
 
             // Set field properties.
             Index = index;
