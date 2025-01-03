@@ -1,5 +1,4 @@
 using Godot;
-using Godot.Collections;
 
 namespace Rusty.EditorUI
 {

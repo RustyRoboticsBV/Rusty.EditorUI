@@ -1,7 +1,6 @@
 ﻿using Godot;
 using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace Rusty.EditorUI
 {
@@ -211,8 +210,11 @@ namespace Rusty.EditorUI
         /* Protected methods. */
         protected override void Init()
         {
-            // Element jnit.
+            // Element init.
             base.Init();
+            
+            // Set name.
+            Name = "List";
 
             // Create container.
             Contents = new();
