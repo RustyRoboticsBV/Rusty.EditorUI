@@ -31,7 +31,7 @@ namespace Rusty.EditorUI
         {
             // Add duplicate of template as nested field.
             Element element = contentsTemplate.Duplicate();
-            element.LocalIndentation = 0;
+            element.LocalIndentation = ContentsIndentation;
             Add(element);
 
             // Set field properties.
@@ -65,11 +65,14 @@ namespace Rusty.EditorUI
 
             // Make label expand & fill.
             HeaderSizeFlags = SizeFlags.ExpandFill;
+            ContentsIndentation = 0;
 
             // Add fake button for a background.
-            ActionButton = new();
-            ActionButton.SizeFlagsHorizontal = SizeFlags.ShrinkEnd;
-            ActionButton.CustomMinimumSize = new Vector2(100f, Height);
+            ActionButton = new()
+            {
+                SizeFlagsHorizontal = SizeFlags.ShrinkEnd,
+                CustomMinimumSize = new Vector2(100f, Height)
+            };
             Header.AddChild(ActionButton);
 
             ActionButton.ButtonText = "...";
@@ -79,7 +82,7 @@ namespace Rusty.EditorUI
             ActionButton.PressedOption += OnPopupPressed;
 
             // Set name.
-            Name = "ListEntryElement_" + Index;
+            Name = "ListEntryElement";
         }
 
         /* Private properties. */

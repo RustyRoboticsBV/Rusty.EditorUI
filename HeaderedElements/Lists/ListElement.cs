@@ -1,5 +1,3 @@
-using Godot;
-
 namespace Rusty.EditorUI
 {
     /// <summary>
@@ -11,7 +9,7 @@ namespace Rusty.EditorUI
         /// <summary>
         /// The template field that will be used to construct list element fields from.
         /// </summary>
-        public Element Template { get; set; }
+        public Element Template { get; set; } = new LabelElement() { LabelText = "MISSING_TEMPLATE" };
         /// <summary>
         /// The text displyed above each entry.
         /// </summary>
@@ -28,7 +26,7 @@ namespace Rusty.EditorUI
         /// <summary>
         /// The number of elements in the list.
         /// </summary>
-        public int Count => Children.Count - 1;
+        public new int Count => Children.Count - 1;
 
         /* Private properties. */
         private ButtonElement AddButton { get; set; }
@@ -48,7 +46,7 @@ namespace Rusty.EditorUI
         public ListElement(ListElement other) : base(other) { }
 
         /* Indexers. */
-        public ListEntryElement this[int index] => Children[index] as ListEntryElement;
+        public new ListEntryElement this[int index] => Children[index] as ListEntryElement;
 
         /* Public methods. */
         public override ListElement Duplicate()
@@ -62,12 +60,13 @@ namespace Rusty.EditorUI
             {
                 Template = otherList.Template;
                 EntryText = otherList.EntryText;
-
-                // Update indices.
+                for (int i = 0; i < Count; i++)
+                {
+                    ConnectEvents(Children.GetAt(i) as ListEntryElement);
+                }
+                AddButton = Children.GetAt(Children.Count - 1) as ButtonElement;
+                AddButton.Pressed += OnPressedAdd;
                 UpdateIndices();
-
-                // Copy button text.
-                AddButtonText = otherList.AddButtonText;
 
                 return true;
             }
@@ -101,9 +100,11 @@ namespace Rusty.EditorUI
             Name = "List";
 
             // Add button.
-            AddButton = new(20f, "Add Entry");
-            AddButton.Name = "AddButton";
-            AddButton.ButtonText = "Add Entry";
+            AddButton = new()
+            {
+                Name = "AddButton",
+                ButtonText = "Add Entry"
+            };
             Children.Add(AddButton);
 
             // Set up events.
@@ -151,7 +152,7 @@ namespace Rusty.EditorUI
             UpdateIndices();
         }
 
-        private void RemoveAt(int elementIndex)
+        private new void RemoveAt(int elementIndex)
         {
             Element element = Children[elementIndex];
             Children.RemoveAt(elementIndex);
@@ -197,6 +198,7 @@ namespace Rusty.EditorUI
                 if (Children[i] is ListEntryElement element)
                 {
                     element.HeaderText = $"{EntryText} #{i}";
+                    element.Name = "Entry" + i;
                     element.Index = i;
                 }
             }
