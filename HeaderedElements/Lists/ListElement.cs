@@ -82,14 +82,6 @@ namespace Rusty.EditorUI
             OnPressedAdd();
         }
 
-        /* Godot overrides. */
-        public override void _Process(double delta)
-        {
-            base._Process(delta);
-
-            UpdateIndices();
-        }
-
         /* Protected methods. */
         protected override void Init()
         {
