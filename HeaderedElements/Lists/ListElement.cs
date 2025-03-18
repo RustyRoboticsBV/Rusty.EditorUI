@@ -82,6 +82,17 @@ namespace Rusty.EditorUI
             OnPressedAdd();
         }
 
+        /// <summary>
+        /// Clear all elements from the list.
+        /// </summary>
+        public void Clear()
+        {
+            while (Count > 0)
+            {
+                RemoveAt(0);
+            }
+        }
+
         /* Protected methods. */
         protected override void Init()
         {
